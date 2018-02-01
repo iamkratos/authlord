@@ -44,7 +44,7 @@ class SignUpForm extends React.Component {
 		console.log(auth);
 
 		auth
-			.doCreateUserWithEmailAndPassword('garyw@gmail.com', 'slim123')
+			.doCreateUserWithEmailAndPassword(email, passwordOne)
 			.then(authUser => {
 				console.log('authuser', authUser);
 				this.setState(() => ({ ...INITIAL_STATE }));
@@ -110,11 +110,13 @@ class SignUpForm extends React.Component {
 }
 
 const SignUpLink = () => {
-	<p>
-		Don't have an account?
-		{''}
-		<Link to={routes.SIGN_UP}>Sign Up</Link>
-	</p>;
+	return (
+		<p>
+			Don't have an account?
+			{''}
+			<Link to={routes.SIGN_UP}>Sign Up</Link>
+		</p>
+	);
 };
 export default withRouter(SignUpPage);
 export { SignUpPage, SignUpLink };

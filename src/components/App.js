@@ -9,29 +9,58 @@ import PasswordForgetPage from './PasswordForgetPage';
 import HomePage from './HomePage';
 import AccountPage from './AccountPage';
 
+import { firebase } from '../firebase';
 import * as routes from '../constants/routes';
 
 import './App.css';
 
-const App = () => (
-	<Router>
-		<div>
-			<Navigation />
+class App extends Component {
+	constructor(props) {
+		super(props);
 
-			<hr />
+		this.state = {
+			authUser: null
+		};
+	}
 
-			<Route exact path={routes.LANDING} component={() => <LandingPage />} />
-			<Route exact path={routes.SIGN_UP} component={() => <SignUpPage />} />
-			<Route exact path={routes.SIGN_IN} component={() => <SignInPage />} />
-			<Route
-				exact
-				path={routes.PASSWORD_FORGET}
-				component={() => <PasswordForgetPage />}
-			/>
-			<Route exact path={routes.HOME} component={() => <HomePage />} />
-			<Route exact path={routes.ACCOUNT} component={() => <AccountPage />} />
-		</div>
-	</Router>
-);
+	componentDidMount() {
+		firebase.auth.onAuthStateChanged(authUser => {
+			authUser
+				? this.setState({ authUser })
+				: this.setState({ authUser: null });
+		});
+	}
+
+	render() {
+		return (
+			<Router>
+				<div>
+					<Navigation authUser={this.state.authUser} />
+
+					<hr />
+
+					<Route
+						exact
+						path={routes.LANDING}
+						component={() => <LandingPage />}
+					/>
+					<Route exact path={routes.SIGN_UP} component={() => <SignUpPage />} />
+					<Route exact path={routes.SIGN_IN} component={() => <SignInPage />} />
+					<Route
+						exact
+						path={routes.PASSWORD_FORGET}
+						component={() => <PasswordForgetPage />}
+					/>
+					<Route exact path={routes.HOME} component={() => <HomePage />} />
+					<Route
+						exact
+						path={routes.ACCOUNT}
+						component={() => <AccountPage />}
+					/>
+				</div>
+			</Router>
+		);
+	}
+}
 
 export default App;
